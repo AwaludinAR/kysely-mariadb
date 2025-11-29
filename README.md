@@ -2,6 +2,8 @@
 
 [![npm version][npm-version-src]][npm-version-href]
 [![License][license-src]][license-href]
+[![ci][ci-src]][ci-href]
+[![pkg.pr.new](https://pkg.pr.new/badge/AwaludinAR/kysely-mariadb)](https://pkg.pr.new/~/AwaludinAR/kysely-mariadb)
 
 ## Installation
 
@@ -95,3 +97,5 @@ console.log(user?.id);
 [npm-version-href]: https://npmjs.com/package/kysely-mariadb
 [license-src]: https://img.shields.io/npm/l/nuxt-authorizer.svg?style=flat&colorA=020420&colorB=00DC82
 [license-href]: https://npmjs.com/package/nuxt-authorizer
+[ci-src]: https://github.com/AwaludinAR/kysely-mariadb/actions/workflows/ci.yaml/badge.svg
+[ci-href]: https://github.com/AwaludinAR/kysely-mariadb/actions/workflows/ci.yaml
