@@ -55,9 +55,9 @@ jobs:
           - 3306:3306
         env:
           MARIADB_DATABASE: test
-          MARIADB_ROOT_PASSWORD: root
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
         options: >-
-          --health-cmd="mysqladmin ping --silent"
+          --health-cmd="mariadb-admin ping --silent"
           --health-interval=30s
           --health-timeout=10s
           --health-retries=10
