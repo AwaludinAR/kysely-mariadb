@@ -16,7 +16,7 @@ export async function useDB(options: { host?: string, port?: number, user?: stri
         hostname: host || 'localhost',
         port: port || 3306,
         username: user || 'root',
-        password: password || 'root',
+        password: password,
         database: 'test',
       }
     )
@@ -26,7 +26,7 @@ export async function useDB(options: { host?: string, port?: number, user?: stri
       host: host || 'localhost',
       port: port || 3306,
       user: user || 'root',
-      password: password || 'root',
+      password: password,
       database: 'test',
     })
   }
