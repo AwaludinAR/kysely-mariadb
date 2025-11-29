@@ -27,4 +27,7 @@ jobs:
       - name: Prepare
         run: npm run build
 
+      - name: Publish PR version
+        run: npx pkg-pr-new publish
+
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
