@@ -27,7 +27,7 @@
     "release": "npm run lint && npm run test && npm run build && changelogen --release --push && npm publish"
   },
   "peerDependencies": {
-    "kysely": "<0.28.8",
+    "kysely": ">= 0.24.0 <1",
     "mariadb": "^3.4.5"
   },
   "peerDependenciesMeta": {
