@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v0.1.0
+
+[compare changes](https://github.com/awaludinar/kysely-mariadb/compare/v0.0.1...v0.1.0)
+
 ## v0.0.1
 
 

@@ -1,6 +1,6 @@
 {
   "name": "kysely-mariadb",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "MariaDB Dialect for Kysely",
   "license": "MIT",
   "repository": {
