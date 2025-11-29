@@ -72,13 +72,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Wait for MariaDB
-        run: |
-          until mysqladmin ping -h 127.0.0.1 -uroot --silent; do
-            echo "Waiting for MariaDB"
-            sleep 2
-          done
-
       - name: Test node
         run: npm run test
 
