@@ -24,7 +24,7 @@
     "test": "vitest run",
     "test:types": "tsc --noEmit",
     "build": "tsup",
-    "release": "npm run lint && npm run test && npm run build && changelogen --release --push"
+    "release": "npm run lint && npm run test && npm run build && changelogen --release --push && npm publish"
   },
   "peerDependencies": {
     "kysely": "<0.28.8",
