@@ -1,9 +1,18 @@
-import { afterAll, describe, expect, it } from 'vitest'
-import { generateTable, useDB } from './fixtures'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { Database, generateTable, useDB } from './fixtures'
 import { isBun } from 'std-env'
+import { ControlledTransaction, Kysely } from 'kysely'
 
 describe('CRUD', async () => {
-  const db = await useDB()
+  let db: Kysely<Database>
+
+  beforeAll(async () => {
+    db = await useDB()
+  })
+
+  afterAll(async () => {
+    await db.destroy()
+  })
   it('Should create tables', async () => {
     await expect(generateTable(db)).resolves.not.toThrow()
   })
@@ -67,14 +76,19 @@ describe('CRUD', async () => {
   })
 
   describe('Update', async () => {
-    const trx = await db.startTransaction().execute()
-    it('Should execute update queries', async () => {
-      const result = await trx.updateTable('entities').set({ active: 0 }).where('id', '=', 3).executeTakeFirst()
-      expect(result.numUpdatedRows).toEqual(BigInt(1))
+    let trx: ControlledTransaction<Database, []>
+
+    beforeAll(async () => {
+      trx = await db.startTransaction().execute()
     })
 
     afterAll(async () => {
       await trx.rollback().execute()
+    })
+
+    it('Should execute update queries', async () => {
+      const result = await trx.updateTable('entities').set({ active: 0 }).where('id', '=', 3).executeTakeFirst()
+      expect(result.numUpdatedRows).toEqual(BigInt(1))
     })
   })
 
