@@ -39,9 +39,13 @@ export class MariadbDriver extends MysqlDriver {
   }
 
   override async acquireConnection(): Promise<DatabaseConnection> {
-    const rawConnection = isPool(this.#mariadb) ? await this.#mariadb.getConnection() : await this.#mariadb!.reserve()
-    const connection = new MariadbConnection(rawConnection)
-    return connection
+    if (!this.#mariadb) {
+      throw new Error('MariadbDriver has not been initialized. Ensure init() is called before acquiring connections.')
+    }
+    const rawConnection = isPool(this.#mariadb)
+      ? await this.#mariadb.getConnection()
+      : await this.#mariadb.reserve()
+    return new MariadbConnection(rawConnection)
   }
 
   override async releaseConnection(connection: DatabaseConnection): Promise<void> {
@@ -87,7 +91,7 @@ export class MariadbConnection implements DatabaseConnection {
     if (!isPoolConnection(this.#rawConnection)) {
       throw new Error('MariadbDialect detected the instance you passed to it does not support streaming.')
     }
-    if (!Number.isInteger(chunkSize) || chunkSize < 0) {
+    if (!Number.isInteger(chunkSize) || chunkSize <= 0) {
       throw new Error('chunkSize must be a positive integer')
     }
 
@@ -104,7 +108,9 @@ export class MariadbConnection implements DatabaseConnection {
         }
       }
 
-      yield { rows: buffer }
+      if (buffer.length > 0) {
+        yield { rows: buffer }
+      }
     } finally {
       stream.destroy()
     }
