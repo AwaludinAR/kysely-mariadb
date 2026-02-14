@@ -93,7 +93,7 @@ describe('CRUD', async () => {
   })
 
   describe('Delete', () => {
-    it('Should exeucte delete queries', async () => {
+    it('Should execute delete queries', async () => {
       const result = await db.deleteFrom('groupRoles').execute()
       expect(result).instanceOf(Array)
       expect(result[0]).toEqual({ numDeletedRows: 2n })

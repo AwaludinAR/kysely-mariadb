@@ -95,7 +95,7 @@ console.log(user?.id);
 
 [npm-version-src]: https://img.shields.io/npm/v/kysely-mariadb/latest.svg?style=flat&colorA=020420&colorB=00DC82
 [npm-version-href]: https://npmjs.com/package/kysely-mariadb
-[license-src]: https://img.shields.io/npm/l/nuxt-authorizer.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/nuxt-authorizer
+[license-src]: https://img.shields.io/npm/l/kysely-mariadb.svg?style=flat&colorA=020420&colorB=00DC82
+[license-href]: https://npmjs.com/package/kysely-mariadb
 [ci-src]: https://github.com/AwaludinAR/kysely-mariadb/actions/workflows/ci.yaml/badge.svg
 [ci-href]: https://github.com/AwaludinAR/kysely-mariadb/actions/workflows/ci.yaml
