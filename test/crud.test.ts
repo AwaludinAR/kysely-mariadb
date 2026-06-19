@@ -42,6 +42,12 @@ describe('CRUD', async () => {
       expect(result).haveOwnProperty('memberId', 2)
     })
 
+    it('Should not return insertId for tables without auto increment', async () => {
+      const result = await db.insertInto('groups').values({ parentId: 2, memberId: 3 }).executeTakeFirst()
+      expect(result.insertId).toBeUndefined()
+      expect(result.numInsertedOrUpdatedRows).toEqual(1n)
+    })
+
     it('Should execute insert and return selected (returning)', async () => {
       const result = await db.insertInto('groupRoles').values(
         [

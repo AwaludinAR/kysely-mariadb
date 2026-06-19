@@ -15,6 +15,12 @@ import { isPool, isPoolConnection } from "./utils";
 
 const PRIVATE_RELEASE_METHOD: unique symbol = Symbol()
 
+function parseInsertId(insertId: bigint | number | null | undefined): bigint | undefined {
+  return insertId !== undefined && insertId !== null && insertId.toString() !== '0'
+    ? BigInt(insertId)
+    : undefined
+}
+
 export class MariadbDriver extends MysqlDriver {
   readonly #config: MariadbDialectConfig
   #mariadb?: MariadbPool | MariadbSQL
@@ -74,10 +80,10 @@ export class MariadbConnection implements DatabaseConnection {
       affectedRows = BigInt(result.affectedRows)
     }
     if ('insertId' in result) {
-      insertId = BigInt(result.insertId)
+      insertId = parseInsertId(result.insertId)
     }
     if ('lastInsertRowid' in result) {
-      insertId = BigInt(result.lastInsertRowid as number)
+      insertId = parseInsertId(result.lastInsertRowid as number)
     }
 
     return {
