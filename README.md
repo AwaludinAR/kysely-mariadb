@@ -33,6 +33,17 @@ yarn add kysely-mariadb mariadb kysely
 bun add kysely-mariadb kysely
 ```
 
+## Compatibility
+
+| Dependency | Supported versions             |
+| ---------- | ------------------------------ |
+| Node.js    | 20 or later                    |
+| Bun        | 1.2.22 or later                |
+| `kysely`   | 0.28.17 or later, below 1.0    |
+| `mariadb`  | 3.2.6+, 3.3.5+, 3.4.8+, 3.5.5+ |
+
+Earlier patch releases of `kysely` and `mariadb` have known SQL injection vulnerabilities. CI runs the tests against both the lowest and the latest supported versions, on MariaDB Server 10, 11 and 12.
+
 ## Usage
 
 ### Node.js

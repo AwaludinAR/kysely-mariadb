@@ -43,11 +43,23 @@ jobs:
         run: npm run build
 
   test:
+    name: test (mariadb ${{ matrix.mariadb-version }}, ${{ matrix.deps }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         mariadb-version: [10, 11, 12]
+        deps: [latest, minimum]
+        include:
+          - deps: latest
+            node-version: lts/*
+            bun-version: latest
+          # Lowest supported versions; keep in sync with package.json and README.
+          - deps: minimum
+            node-version: 20
+            bun-version: 1.2.22
+            kysely-version: 0.28.17
+            mariadb-connector-version: 3.2.6
     services:
       mariadb:
         image: mariadb:${{ matrix.mariadb-version }}
@@ -66,12 +78,18 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: lts/*
+          node-version: ${{ matrix.node-version }}
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun-version }}
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install minimum kysely and mariadb
+        if: matrix.deps == 'minimum'
+        run: npm install --no-save kysely@${{ matrix.kysely-version }} mariadb@${{ matrix.mariadb-connector-version }}
 
       - name: Test node
         run: npm run test

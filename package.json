@@ -33,9 +33,12 @@
     "build": "tsdown",
     "release": "npm run lint && npm run test && npm run build && changelogen --release --push && npm publish"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "peerDependencies": {
-    "kysely": ">= 0.24.0 <1",
-    "mariadb": "^3.4.5"
+    "kysely": ">=0.28.17 <1",
+    "mariadb": "~3.2.6 || ~3.3.5 || ~3.4.8 || ^3.5.5"
   },
   "peerDependenciesMeta": {
     "mariadb": {
@@ -49,8 +52,8 @@
     "changelogen": "^0.6.2",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
-    "kysely": "^0.28.8",
-    "mariadb": "^3.4.5",
+    "kysely": "^0.29.9",
+    "mariadb": "^3.5.5",
     "std-env": "^3.10.0",
     "tsdown": "^0.22.3",
     "typescript": "^5.9.3",
