@@ -4,9 +4,9 @@ import { MariadbDialect } from '../../src'
 import { Database } from "./types"
 import { MariadbPool, MariadbSQL } from "../../src/types"
 
-export async function useDB(options: { host?: string, port?: number, user?: string, password?: string } = {}) {
+export async function useDB(options: { host?: string, port?: number, user?: string, password?: string, connectionLimit?: number } = {}) {
 
-  const { host, port, user, password } = options
+  const { host, port, user, password, connectionLimit } = options
   let poolOrSql: MariadbPool | MariadbSQL
   if (isBun) {
     const { SQL } = await import('bun')
@@ -18,6 +18,7 @@ export async function useDB(options: { host?: string, port?: number, user?: stri
         username: user || 'root',
         password: password,
         database: 'test',
+        max: connectionLimit,
       }
     )
   } else {
@@ -28,6 +29,7 @@ export async function useDB(options: { host?: string, port?: number, user?: stri
       user: user || 'root',
       password: password,
       database: 'test',
+      connectionLimit,
     })
   }
 

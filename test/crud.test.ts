@@ -1,7 +1,15 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { Database, generateTable, useDB } from './fixtures'
 import { isBun } from 'std-env'
-import { ControlledTransaction, Kysely } from 'kysely'
+import { ControlledTransaction, Kysely, sql } from 'kysely'
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
+  })
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer))
+}
 
 describe('CRUD', async () => {
   let db: Kysely<Database>
@@ -69,6 +77,32 @@ describe('CRUD', async () => {
       }
 
       expect(results).toContainEqual({ id: 3, nickname: 'entity3', active: 1 })
+    })
+
+    it.skipIf(isBun)('Should keep the connection usable after a stream is stopped early', async () => {
+      // One connection, so the next query runs on the one the stream used.
+      const singleConnectionDb = await useDB({ connectionLimit: 1 })
+      try {
+        const rows = []
+        // Large enough that rows are still unread when the loop breaks.
+        const stream = singleConnectionDb
+          .selectFrom(sql<{ seq: number }>`seq_1_to_100000`.as('s'))
+          .select('s.seq')
+          .stream()
+        for await (const row of stream) {
+          rows.push(row)
+          if (rows.length >= 10) break
+        }
+        expect(rows).toHaveLength(10)
+
+        const result = await withTimeout(
+          singleConnectionDb.selectNoFrom(sql<number>`1`.as('ok')).executeTakeFirst(),
+          2000,
+        )
+        expect(result).toEqual({ ok: 1 })
+      } finally {
+        await withTimeout(singleConnectionDb.destroy(), 1000).catch(() => {})
+      }
     })
 
     it('Should execute and pass select queries', async () => {

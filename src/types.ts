@@ -23,7 +23,12 @@ export interface MariadbSQL {
 export interface MariadbPoolConnection {
   release: () => Promise<void>
   query: (sql: string, parameters?: any[]) => Promise<MariadbPoolResult | Array<any>>
-  queryStream: (sql: string, parameters?: any[]) => Readable
+  queryStream: (sql: string, parameters?: any[]) => MariadbQueryStream
+}
+
+export interface MariadbQueryStream extends Readable {
+  /** Discards unread rows so the connection can run its next command. */
+  close?: () => void
 }
 
 export interface MariadbReservedSQL {

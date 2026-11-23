@@ -118,6 +118,8 @@ export class MariadbConnection implements DatabaseConnection {
         yield { rows: buffer }
       }
     } finally {
+      // Without close(), stopping early leaves unread rows that hang the connection.
+      stream.close?.()
       stream.destroy()
     }
   }
