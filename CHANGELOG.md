@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.1.4
+
+[compare changes](https://github.com/AwaludinAR/kysely-mariadb/compare/v0.1.3...v0.1.4)
+
+### 🩹 Fixes
+
+- **driver:** Close stream on early stop to free the connection ([f80aa9e](https://github.com/AwaludinAR/kysely-mariadb/commit/f80aa9e))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump postcss from 8.5.15 to 8.5.26 ([4aa69f3](https://github.com/AwaludinAR/kysely-mariadb/commit/4aa69f3))
+- **deps-dev:** Bump brace-expansion from 1.1.12 to 1.1.18 ([3632965](https://github.com/AwaludinAR/kysely-mariadb/commit/3632965))
+- **deps-dev:** Bump @humanfs/node from 0.16.7 to 0.16.8 ([2d14399](https://github.com/AwaludinAR/kysely-mariadb/commit/2d14399))
+- **deps-dev:** Bump js-yaml from 4.1.1 to 4.3.2 ([29d2e21](https://github.com/AwaludinAR/kysely-mariadb/commit/29d2e21))
+- **deps-dev:** Bump mariadb from 3.4.5 to 3.5.4 ([e03f547](https://github.com/AwaludinAR/kysely-mariadb/commit/e03f547))
+- **deps-dev:** Bump source-map-js from 1.2.1 to 1.2.2 ([04aba53](https://github.com/AwaludinAR/kysely-mariadb/commit/04aba53))
+- Align supported node, bun, kysely and mariadb versions ([d4e8d66](https://github.com/AwaludinAR/kysely-mariadb/commit/d4e8d66))
+
+### 🤖 CI
+
+- Run bun tests under the bun runtime ([7dcd6be](https://github.com/AwaludinAR/kysely-mariadb/commit/7dcd6be))
+- Add manual release workflow ([2ea4f57](https://github.com/AwaludinAR/kysely-mariadb/commit/2ea4f57))
+
+### ❤️ Contributors
+
+- Awaludin AR ([@AwaludinAR](https://github.com/AwaludinAR))
+
 ## v0.1.3
 
 [compare changes](https://github.com/awaludinar/kysely-mariadb/compare/v0.1.2...v0.1.3)
