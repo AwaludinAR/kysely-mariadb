@@ -1,0 +1,80 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release, e.g. 0.2.0 (leave empty to derive it from the commits since the last tag)
+        type: string
+      dry-run:
+        description: Skip publishing to npm, pushing and creating the GitHub release
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yaml
+
+  release:
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump version and update changelog
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          flags=(--bump)
+          [ -z "$VERSION" ] || flags+=(-r "${VERSION#v}")
+          npx changelogen "${flags[@]}"
+          version=$(node -p "require('./package.json').version")
+          # changelogen only bumps package.json; this syncs package-lock.json.
+          npm version "$version" --no-git-tag-version --allow-same-version
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(release): v$version"
+          git tag -am "v$version" "v$version"
+          git diff -U0 HEAD~1 -- CHANGELOG.md | sed -n '/^+++/d; s/^+//p' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build
+        run: npm run build
+
+      - name: Check main has not moved
+        if: ${{ !inputs.dry-run }}
+        run: |
+          git fetch origin main
+          test "$(git rev-parse HEAD~1)" = "$(git rev-parse origin/main)"
+
+      - name: Publish to npm
+        run: npm publish ${{ inputs.dry-run && '--dry-run' || '' }}
+
+      - name: Push release commit and tag
+        if: ${{ !inputs.dry-run }}
+        run: git push --follow-tags
+
+      - name: Create GitHub release
+        if: ${{ !inputs.dry-run }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npx changelogen gh release "$(node -p "require('./package.json').version")"

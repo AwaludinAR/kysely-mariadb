@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/awaludinar/kysely-mariadb"
+    "url": "git+https://github.com/AwaludinAR/kysely-mariadb.git"
   },
   "keywords": [
     "mariadb",
@@ -30,8 +30,7 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:types": "tsc --noEmit",
-    "build": "tsdown",
-    "release": "npm run lint && npm run test && npm run build && changelogen --release --push && npm publish"
+    "build": "tsdown"
   },
   "engines": {
     "node": ">=20"
