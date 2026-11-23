@@ -77,4 +77,4 @@ jobs:
         run: npm run test
 
       - name: Test bun
-        run: bun run test
+        run: bun --bun run test
